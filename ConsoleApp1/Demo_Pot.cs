@@ -93,6 +93,6 @@ class Demo_Pot
         MeshGL mesh = pot.GetMeshGL(-1);
 
         StlExporter.Export(mesh, "result.stl");
-        StlViewer.Render("result.stl", colour: "#c4622d", embedPlotly: true);
+        StlViewer.Render("result.stl", colour: "#c4622d");
     }
 }

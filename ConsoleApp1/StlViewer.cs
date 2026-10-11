@@ -18,11 +18,7 @@ using System.Text.Json;
 public static class StlViewer
 {
     /// <summary>Writes &lt;name&gt;.html next to the STL and returns its path.</summary>
-    /// <param name="embedPlotly">
-    /// True writes plotly.js into the page so it works offline (~4.6 MB);
-    /// false links to the CDN instead (a few KB, but needs internet to open).
-    /// </param>
-    public static string Render(string stlPath, string colour = "#55565e", bool open = true, bool embedPlotly = false)
+    public static string Render(string stlPath, string colour = "#55565e", bool open = true)
     {
         var (v, f) = Load(stlPath);
         int numTri = f.Length / 3;
@@ -57,7 +53,7 @@ public static class StlViewer
               <meta charset="utf-8">
               <meta name="viewport" content="width=device-width, initial-scale=1">
               <title>{{{Path.GetFileName(stlPath)}}}</title>
-              {{{PlotlyScriptTag(embedPlotly)}}}
+              {{{PlotlyScript}}}
               <style>
                 html, body { height: 100%; margin: 0; font: 14px system-ui, sans-serif; }
                 body { display: flex; flex-direction: column; }
@@ -310,24 +306,7 @@ public static class StlViewer
         return (min, max);
     }
 
-    const string PlotlyUrl = "https://cdn.plot.ly/plotly-2.35.2.min.js";
-
-    // Either a link to the CDN (small file, needs internet) or the whole of plotly.js
-    // inline (~4.6 MB, works offline - Python's include_plotlyjs=True).
-    internal static string PlotlyScriptTag(bool embed)
-    {
-        if (!embed) return $"<script src=\"{PlotlyUrl}\"></script>";
-
-        // Downloaded once, then reused from the local cache.
-        string cache = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                                    "StlViewer", Path.GetFileName(PlotlyUrl));
-        if (!File.Exists(cache))
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(cache)!);
-            using var http = new HttpClient();
-            File.WriteAllText(cache, http.GetStringAsync(PlotlyUrl).GetAwaiter().GetResult());
-        }
-        // A literal "</script" inside the code would end the tag early.
-        return $"<script>{File.ReadAllText(cache).Replace("</script", "<\\/script")}</script>";
-    }
+    // plotly.js is loaded from its CDN when the page opens, so pages stay small but need
+    // internet. Pinned to an exact version so pages keep working if Plotly changes.
+    internal const string PlotlyScript = """<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>""";
 }

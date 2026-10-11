@@ -84,6 +84,6 @@ class Demo_Pyramid
         // result.stl is the file to load into your slicer; the viewer opens an
         // interactive 3D preview in your browser so you can spin it around first.
         StlExporter.Export(mesh, "result.stl");
-        StlViewer.Render("result.stl", colour: "#e0b040", embedPlotly: true);
+        StlViewer.Render("result.stl", colour: "#e0b040");
     }
 }

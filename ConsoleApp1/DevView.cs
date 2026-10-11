@@ -53,7 +53,7 @@ public class DevView
     }
 
     /// <summary>Writes the page (default: the title as a file name, .html) and opens it.</summary>
-    public string Show(string? path = null, bool open = true, bool embedPlotly = true)
+    public string Show(string? path = null, bool open = true)
     {
         path ??= string.Concat(_title.Select(ch => char.IsLetterOrDigit(ch) ? char.ToLowerInvariant(ch) : '_')) + ".html";
 
@@ -67,7 +67,7 @@ public class DevView
               <meta charset="utf-8">
               <meta name="viewport" content="width=device-width, initial-scale=1">
               <title>{{{_title}}}</title>
-              {{{StlViewer.PlotlyScriptTag(embedPlotly)}}}
+              {{{StlViewer.PlotlyScript}}}
               <style>
                 html, body { height: 100%; margin: 0; font: 14px system-ui, sans-serif; background: #fff; color: #222; }
                 body { display: flex; flex-direction: column; }

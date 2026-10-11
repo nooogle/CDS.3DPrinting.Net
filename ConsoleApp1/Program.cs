@@ -37,4 +37,4 @@ Demo_ChamferedPot.Run();
 // Console.WriteLine($"wrote  = {Path.GetFullPath(stlPath)}");
 
 // // Turn the STL into an interactive page and open it in the browser.
-// StlViewer.Render(stlPath, colour: "#d42a24", embedPlotly: true);
+// StlViewer.Render(stlPath, colour: "#d42a24");

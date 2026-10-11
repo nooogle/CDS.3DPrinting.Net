@@ -15,7 +15,7 @@ class Demo_Cube
 
         // Export and view
         StlExporter.Export(mesh, "result.stl");
-        StlViewer.Render("result.stl", colour: "#24ca24", embedPlotly: true);
+        StlViewer.Render("result.stl", colour: "#24ca24");
     }
 }
 

@@ -72,6 +72,6 @@ class Demo_Donut
         MeshGL mesh = donut.GetMeshGL(-1);
 
         StlExporter.Export(mesh, "result.stl");
-        StlViewer.Render("result.stl", colour: "#d9a066", embedPlotly: true);
+        StlViewer.Render("result.stl", colour: "#d9a066");
     }
 }

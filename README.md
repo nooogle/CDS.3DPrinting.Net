@@ -27,4 +27,4 @@ cd ConsoleApp1
 dotnet run
 ```
 
-Pick which demo runs by uncommenting it in `Program.cs`. Each one writes `result.stl` for slicing and printing, and opens a viewer page in your browser. The pages embed plotly.js so they work offline; it's downloaded once and then cached.
+Pick which demo runs by uncommenting it in `Program.cs`. Each one writes `result.stl` for slicing and printing, and opens a viewer page in your browser. The pages load plotly.js from its CDN, so opening them needs an internet connection.
