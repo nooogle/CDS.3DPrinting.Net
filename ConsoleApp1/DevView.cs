@@ -14,7 +14,8 @@ using ManifoldSharp;
 ///     view.Show();                                   // writes the page and opens it
 ///
 /// In the page: Left/Right (or the Stage slider) steps through the stages. A stage without
-/// a tool shows the stage before it as a faint grey ghost, so you can see what changed.
+/// a tool shows the stage before it as a faint grey ghost, so you can see what changed
+/// (or pass ghost: to compare against something else, such as the starting shape).
 ///
 /// Slicing, as in StlViewer: pick a cut axis and drag the Cut slider (or s, Up/Down, f) to
 /// move a plane through the model. The cut edge is outlined in the 3D view, and the
@@ -43,12 +44,20 @@ public class DevView
 
     /// <summary>
     /// Adds a stage. <paramref name="tool"/> is an optional shape, such as a cutter about
-    /// to be subtracted, drawn in translucent red over the model.
+    /// to be subtracted, drawn in translucent red over the model. <paramref name="ghost"/>
+    /// picks what to show as the faint grey ghost, when the previous stage (the default)
+    /// isn't the useful comparison.
     /// </summary>
-    public void Step(string label, Manifold model, Manifold? tool = null)
+    public void Step(string label, Manifold model, Manifold? tool = null, Manifold? ghost = null)
     {
         // Snapshot the triangles now: later stages don't change this one.
-        _stages.Add(new { label, model = ToMesh(model), tool = tool is null ? null : ToMesh(tool) });
+        _stages.Add(new
+        {
+            label,
+            model = ToMesh(model),
+            tool = tool is null ? null : ToMesh(tool),
+            ghost = ghost is null ? null : ToMesh(ghost),
+        });
         Console.WriteLine($"devview: {_stages.Count,2}. {label}  ({model.NumTri()} triangles{(tool is null ? "" : $", tool {tool.NumTri()}")})");
     }
 
@@ -125,7 +134,7 @@ public class DevView
 
                 // Each mesh gets its point columns and per-axis bounds worked out once.
                 const meshes = [];
-                for (const s of D.stages) for (const m of [s.model, s.tool]) if (m) prepare(m);
+                for (const s of D.stages) for (const m of [s.model, s.tool, s.ghost]) if (m) prepare(m);
                 function prepare(m) {
                   const n = m.v.length / 3;
                   m.n = n;
@@ -311,9 +320,11 @@ public class DevView
                 let shown2d = null;
                 function draw() {
                   const s = D.stages[st.i];
-                  // A stage with a tool shows the same model as before, so only ghost the others.
+                  // The ghost is the one the stage asked for, or else the stage before. A stage
+                  // with a tool shows the same model as before, so that gets no default ghost.
+                  const ghost = s.ghost ?? (st.i > 0 && !s.tool ? D.stages[st.i - 1].model : null);
                   const parts = [];
-                  if (st.i > 0 && !s.tool) parts.push({ ...part(D.stages[st.i - 1].model, GHOST, 0.12, false), line: GHOST, dash: "dot" });
+                  if (ghost) parts.push({ ...part(ghost, GHOST, 0.12, false), line: GHOST, dash: "dot" });
                   parts.push({ ...part(s.model, D.colour, 1, true), line: SECTION, dash: "solid", wire: "#222" });
                   if (s.tool && st.tools) parts.push({ ...part(s.tool, TOOL, 0.6, true), line: TOOL, dash: "solid", wire: "#7a1a0e" });
 

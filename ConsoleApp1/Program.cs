@@ -5,9 +5,10 @@ using ManifoldSharp.Linalg;
 //Demo_Pyramid.Run();
 //Demo_Pot.Run();
 //Demo_PotWithHoles.Run();
-Demo_ChamferedPot.Run();
+//Demo_ChamferedPot.Run();
 //Demo_Donut.Run();
 //Demo_RoundedBox.Run();
+Demo_Minkowski.Run();
 
 
 // Manifold cube = Manifold.Cube(new Vec3(1.0, 1.0, 1.0), center: true);

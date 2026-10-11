@@ -14,6 +14,7 @@ All in `ConsoleApp1`:
   - `Demo_ChamferedPot`: revolving a 2D outline, with chamfered edges and countersunk holes.
   - `Demo_Donut`: a torus from a revolved circle.
   - `Demo_RoundedBox`: a box with rounded edges, from the hull of 8 spheres.
+  - `Demo_Minkowski`: growing, shrinking, rounding and filleting an L-shaped bracket with Minkowski sums.
 - **`DevView`**: captures a model at each stage of building it and writes a page you can step through in the browser. It shows cutting tools in red, the previous stage as a ghost, a movable cut plane with a flat cross-section, and optional triangle edges.
 - **`StlViewer`**: an interactive browser view of any STL file, with a slicer.
 - **`StlExporter`**: writes a Manifold mesh to a binary STL file.
